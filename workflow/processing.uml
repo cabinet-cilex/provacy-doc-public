@@ -1,0 +1,58 @@
+uml-processing
+@startuml
+autonumber 0 10
+
+skinparam backgroundColor #EEEBDC
+
+Title \n**Provacy - Workflow Traitement**\n\n
+
+
+participant CREATED as "Nouveau"
+
+[o-> CREATED : Nouvelle fiche
+CREATED ->> CREATED : Modifier - Enregistrer
+
+
+create participant VALIDATED as "A publier"
+
+CREATED -> VALIDATED : Demander la publication
+note right: (validation par les fonctionnels)
+
+create participant FINISHED as "Publié"
+VALIDATED ->o FINISHED : Publier
+VALIDATED -->> CREATED : Reclasser en brouillon
+CREATED ->>o FINISHED : Publier directement
+
+collections A_REPLACED as "Versionné"
+
+group Création d'une nouvelle version
+  FINISHED o-> CREATED : Nouvelle version
+  CREATED -> VALIDATED : Demander la publication
+  VALIDATED ->o FINISHED : Publier
+  autonumber stop
+  autonumber resume 1
+  CREATED ->>o FINISHED : Publier directement
+  FINISHED -->>o A_REPLACED : Archivage V-1
+  note left: Archivage automatique \nde la version précédente \nsur publication
+end
+
+autonumber stop
+
+|||
+... //**Copies de fiches**// ...
+CREATED ->> CREATED : Copier
+VALIDATED ->> CREATED : Copier
+FINISHED ->> CREATED : Copier
+
+|||
+collections A_CANCELLED as "Abandonné"
+collections A_FINAL as "Terminé"
+
+... //**Archivage de fiches**// ...
+CREATED -->>o A_CANCELLED: Abandonner
+VALIDATED -->>o A_CANCELLED: Abandonner
+FINISHED -->>o A_FINAL : Archiver
+
+|||
+@enduml
+uml-processing
