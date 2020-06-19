@@ -16,7 +16,6 @@ CREATED ->> CREATED : Modifier - Enregistrer
 create participant VALIDATED as "Réponses en cours"
 
 CREATED -> VALIDATED : Valider
-note right: (validation par les fonctionnels)
 
 create participant FINISHED as "Publié"
 VALIDATED ->o FINISHED : Clore
