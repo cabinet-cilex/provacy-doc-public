@@ -1,0 +1,45 @@
+@startuml
+autonumber 0 10
+
+skinparam backgroundColor #EEEBDC
+
+Title \n**EN COURS - Provacy - Workflow DARO**\n\n
+
+
+participant CREATED as "Reçues"
+
+[o-> CREATED : Nouvelle fiche DARO
+CREATED ->> CREATED : Modifier - Enregistrer
+
+
+create participant VALIDATED as "Réponses en cours"
+
+CREATED -> VALIDATED : Valider
+note right: (validation par les fonctionnels)
+
+create participant FINISHED as "Publié"
+VALIDATED ->o FINISHED : Clore
+VALIDATED -->> CREATED : Reclasser en brouillon
+CREATED ->>o FINISHED : Clore directement
+
+collections A_REPLACED as "Versionné"
+
+autonumber stop
+
+|||
+... //**Copies de fiches**// ...
+CREATED ->> CREATED : Copier
+VALIDATED ->> CREATED : Copier
+FINISHED ->> CREATED : Copier
+
+|||
+collections A_CANCELLED as "Abandonné"
+collections A_FINAL as "Terminé"
+
+... //**Archivage de fiches**// ...
+CREATED -->>o A_CANCELLED: Rejeter
+VALIDATED -->>o A_CANCELLED: Abandonner
+FINISHED -->>o A_FINAL : Archiver
+
+|||
+@enduml
